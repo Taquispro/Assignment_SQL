@@ -1,0 +1,76 @@
+# Assignment_SQL
+
+-- create
+CREATE TABLE PRODUCT (
+    PRD_ID INT PRIMARY KEY,
+    NAME VARCHAR(50),
+    DESCRIPTION VARCHAR(100),
+    PRICE DOUBLE,
+    QTY_AVAILABLE INT,
+    STATUS ENUM('Available', 'Not Available')
+);
+
+
+INSERT INTO PRODUCT
+(PRD_ID, NAME, DESCRIPTION, PRICE, QTY_AVAILABLE, STATUS)
+VALUES
+(1001, 'Frooti', 'Soft Drink', 25.00, 100, 'Available'),
+(1002, 'Surf', 'Washing Powder', 185.00, 10, 'Available'),
+(1003, 'Pepsi', 'Soft Drink', 25.00, 100, 'Not Available'),
+(1004, 'Pepsodent', 'Tooth Paste', 65.00, 40, 'Available');
+
+-- select * from PRODUCT;
+
+CREATE TABLE ORDERS (
+    ORD_ID INT PRIMARY KEY,
+    PRD_ID INT,
+    QUANTITY INT,
+    ORD_TOTAL DOUBLE,
+    STATUS ENUM('Initiated', 'In Transit', 'Delivered'),
+    FOREIGN KEY (PRD_ID) REFERENCES PRODUCT(PRD_ID)
+);
+
+INSERT INTO ORDERS
+(ORD_ID, PRD_ID, QUANTITY, ORD_TOTAL, STATUS)
+VALUES
+(10001, 1001, 2, 50.00, 'Initiated'),
+(10002, 1002, 1, 150.00, 'Delivered'),
+(10003, 1004, 2, 50.00, 'Delivered'),
+(10004, 1001, 4, 100.00, 'Initiated'),
+(10005, 1004, 2, 50.00, 'Initiated'),
+(10006, 1001, 1, 25.00, 'Delivered'),
+(10007, 1003, 2, 50.00, 'Delivered');
+
+SELECT
+    O.ORD_ID,
+    P.NAME,
+    P.PRICE,
+    O.QUANTITY,
+    O.ORD_TOTAL
+FROM ORDERS O
+INNER JOIN PRODUCT P
+ON O.PRD_ID = P.PRD_ID
+WHERE O.STATUS = 'Delivered';
+
+SELECT
+    P.PRD_ID,
+    P.NAME,
+    SUM(O.QUANTITY) AS TOTAL_QUANTITY_ORDERED,
+    SUM(O.ORD_TOTAL) AS TOTAL_AMOUNT
+FROM PRODUCT P
+INNER JOIN ORDERS O
+ON P.PRD_ID = O.PRD_ID
+GROUP BY P.PRD_ID, P.NAME;
+
+
+
+SELECT DISTINCT
+    P.PRD_ID,
+    P.NAME
+FROM PRODUCT P
+INNER JOIN ORDERS O
+ON P.PRD_ID = O.PRD_ID
+WHERE O.STATUS = 'Delivered'
+AND P.STATUS = 'Not Available';
+
+
