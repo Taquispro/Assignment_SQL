@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Registration</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4;">
+
+    <div style="width:400px; margin:30px auto; padding:20px; background-color:white; border:1px solid #ccc;">
+
+        <h2 style="text-align:center;">Customer Registration</h2>
+
+        <div id="errorBox" style="color:red; margin-bottom:15px;"></div>
+
+        <form action="https://www.ultimatix.com" onsubmit="return validateForm()">
+
+            <label>Full Name</label><br>
+            <input type="text" id="fname" style="width:100%; padding:8px;"><br><br>
+
+            <label>Last Name</label><br>
+            <input type="text" id="lname" style="width:100%; padding:8px;"><br><br>
+
+            <label>Email</label><br>
+            <input type="text" id="email" style="width:100%; padding:8px;"><br><br>
+
+            <label>Password</label><br>
+            <input type="password" id="pwd" style="width:100%; padding:8px;"><br><br>
+
+            <label>Confirm Password</label><br>
+            <input type="password" id="cpwd" style="width:100%; padding:8px;"><br><br>
+
+            <label>Telephone Number</label><br>
+            <input type="text" id="phone" style="width:100%; padding:8px;"><br><br>
+
+            <button type="submit" style="width:100%; padding:10px;">
+                Register
+            </button>
+
+        </form>
+    </div>
+
+<script>
+function validateForm() {
+
+    var errors = [];
+
+    var fname = document.getElementById("fname").value.trim();
+    var lname = document.getElementById("lname").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var pwd = document.getElementById("pwd").value;
+    var cpwd = document.getElementById("cpwd").value;
+    var phone = document.getElementById("phone").value.trim();
+
+    if(fname == ""){
+        errors.push("Full Name is required");
+    }
+
+    if(lname == ""){
+        errors.push("Last Name is required");
+    }
+
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailPattern.test(email)){
+        errors.push("Enter a valid Email");
+    }
+
+    if(pwd.length < 6){
+        errors.push("Password must be at least 6 characters");
+    }
+
+    if(pwd != cpwd){
+        errors.push("Password and Confirm Password must match");
+    }
+
+    var phonePattern = /^[0-9]{10}$/;
+
+    if(!phonePattern.test(phone)){
+        errors.push("Telephone Number must contain exactly 10 digits");
+    }
+
+    var errorBox = document.getElementById("errorBox");
+
+    if(errors.length > 0){
+
+        var output = "<ul>";
+
+        for(var i = 0; i < errors.length; i++){
+            output += "<li>" + errors[i] + "</li>";
+        }
+
+        output += "</ul>";
+
+        errorBox.innerHTML = output;
+        errorBox.style.color = "red";
+
+        return false;
+    }
+
+    errorBox.innerHTML = "Registration Successful!";
+    errorBox.style.color = "green";
+
+    return true;
+}
+</script>
+
+</body>
+</html>
