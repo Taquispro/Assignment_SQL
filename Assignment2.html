@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login & Registration</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background-color:#f2f2f2;
+        }
+
+        .container{
+            width:300px;
+            margin:100px auto;
+            padding:20px;
+            background:white;
+            border-radius:10px;
+            box-shadow:0px 0px 10px gray;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin:8px 0;
+            box-sizing:border-box;
+        }
+
+        button{
+            width:100%;
+            padding:10px;
+            background:blue;
+            color:white;
+            border:none;
+            cursor:pointer;
+        }
+
+        .error{
+            color:red;
+            font-weight:bold;
+            display:block;
+            margin-bottom:10px;
+            text-align:center;
+        }
+
+        .success{
+            color:green;
+            font-weight:bold;
+            text-align:center;
+            margin-top:10px;
+        }
+
+        #loginForm{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Registration Form -->
+    <div id="registerForm">
+        <h2>Register</h2>
+
+        <span id="regError" class="error"></span>
+
+        <input type="text" id="regUser" placeholder="Enter Username">
+        <input type="password" id="regPass" placeholder="Enter Password">
+
+        <button onclick="registerUser()">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+        <h2>Login</h2>
+
+        <span id="loginError" class="error"></span>
+
+        <input type="text" id="loginUser" placeholder="Enter Username">
+        <input type="password" id="loginPass" placeholder="Enter Password">
+
+        <button onclick="loginUser()">Login</button>
+    </div>
+
+    <p id="msg" class="success"></p>
+
+</div>
+
+<script>
+
+window.onload=function(){
+
+    if(localStorage.getItem("username")){
+        document.getElementById("registerForm").style.display="none";
+        document.getElementById("loginForm").style.display="block";
+    }
+};
+
+function registerUser(){
+
+    var username=document.getElementById("regUser").value;
+    var password=document.getElementById("regPass").value;
+
+    document.getElementById("regError").innerHTML="";
+
+    if(username==""){
+        document.getElementById("regError").innerHTML=
+        "Username cannot be empty";
+        return;
+    }
+
+    if(password==""){
+        document.getElementById("regError").innerHTML=
+        "Password cannot be empty";
+        return;
+    }
+
+    localStorage.setItem("username",username);
+    localStorage.setItem("password",password);
+
+    document.getElementById("msg").innerHTML=
+    "Registration Successful! Please Login.";
+
+    document.getElementById("registerForm").style.display="none";
+    document.getElementById("loginForm").style.display="block";
+}
+
+function loginUser(){
+
+    var username=document.getElementById("loginUser").value;
+    var password=document.getElementById("loginPass").value;
+
+    document.getElementById("loginError").innerHTML="";
+
+    if(username==""){
+        document.getElementById("loginError").innerHTML=
+        "Enter Username";
+        return;
+    }
+
+    if(password==""){
+        document.getElementById("loginError").innerHTML=
+        "Enter Password";
+        return;
+    }
+
+    var storedUser=localStorage.getItem("username");
+    var storedPass=localStorage.getItem("password");
+
+    if(username===storedUser && password===storedPass){
+        document.getElementById("msg").innerHTML=
+        "Login Successful!";
+    }
+    else{
+        document.getElementById("loginError").innerHTML=
+        "Invalid Username or Password";
+    }
+}
+
+</script>
+
+</body>
+</html>
